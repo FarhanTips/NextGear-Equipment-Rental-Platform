@@ -66,14 +66,14 @@ const NavBar = () => {
                     </div>
 
                     <div className="flex flex-col">
-                        <span className="text-[17px] leading-none font-extrabold tracking-[-0.02em] text-slate-900 sm:text-[19px] md:text-[20px]">
+                        <span className="text-[17px] leading-none font-extrabold text-slate-900 sm:text-[19px] md:text-[20px] tracking-[0.14em]">
                             Next
                             <span className="bg-linear-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
                                 Gear
                             </span>
                         </span>
 
-                        <span className="mt-1 text-[8px] font-semibold tracking-[0.2em] text-slate-400 uppercase sm:mt-1.5 sm:text-[9px] sm:tracking-[0.22em]">
+                        <span className="mt-1 text-[8px] font-semibold tracking-widest text-slate-400 uppercase sm:mt-1.5 sm:text-[9px] sm:tracking-[0.18em]">
                             Equipment Marketplace
                         </span>
                     </div>
