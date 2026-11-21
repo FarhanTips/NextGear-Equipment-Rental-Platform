@@ -1,5 +1,5 @@
 
-'use client'
+
 import {
     Sidebar,
     SidebarContent,
@@ -10,8 +10,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { authClient } from "@/lib/auth-client";
-import { Bookmark, BriefcaseBusiness, ClipboardList, LayoutDashboard, Package, PlusCircle, User, Users } from "lucide-react"
+
+import { getSession } from "@/lib/core/server";
+import { Bookmark, BriefcaseBusiness, ClipboardList, Package, PlusCircle, User, Users } from "lucide-react"
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 
 const menuItemsByRole = {
@@ -35,10 +38,12 @@ const menuItemsByRole = {
 }
 
 
-export function DashboardSidebar() {
-    const { data: session, isPending } = authClient.useSession();
+export async function DashboardSidebar() {
+    const session = await getSession();
+    console.log("dashboard session", session);
 
-    if (isPending || !session) {
+    if (!session) {
+        // redirect("/sign-in"); this is fun, check if you want to enjoy. /unauthorized will not work if you use this. Find why? Hint: dashboard er layout then admin er layout.
         return null;
     }
 
@@ -49,9 +54,9 @@ export function DashboardSidebar() {
                 <SidebarGroup>
                     <SidebarMenu>
                         {
-                            menuItemsByRole[session?.user.userRole].map((item) => (
+                            menuItemsByRole[session.user.userRole].map((item) => (
                                 <SidebarMenuItem key={item.name}>
-                                    <SidebarMenuButton render={<a href={item.url} />}>
+                                    <SidebarMenuButton render={<Link href={item.url} />}>
                                         <item.icon />
                                         <span>{item.name}</span>
                                     </SidebarMenuButton>
