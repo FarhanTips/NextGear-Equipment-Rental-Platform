@@ -85,7 +85,7 @@ export default function LogInPage() {
             callbackURL: "/",
             errorCallbackURL: "/sign-up",
         });
-        console.log("Cgheck rror", error);
+        console.log("Check rror", error);
         if (error) {
             toast.add({
                 type: "error",
@@ -146,7 +146,7 @@ export default function LogInPage() {
                     </Field>
 
                     <FieldSeparator className="*:data-[slot=field-separator-content]:bg-white">
-                        <span className="text-xs font-medium text-stone-400">or continue with email</span>
+                        <span className="text-xs font-medium text-stone-400">or continue</span>
                     </FieldSeparator>
 
                     <Field>
