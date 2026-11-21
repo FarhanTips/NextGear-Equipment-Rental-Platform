@@ -77,7 +77,7 @@ const UserInfo = () => {
                 {/* Register - Premium gradient design */}
                 <Link
                     href="/sign-up"
-                    className="group relative inline-flex h-8 items-center justify-center gap-1.5 overflow-hidden rounded-full bg-linear-to-r from-orange-500 via-orange-500 to-amber-400 px-3 text-[11px] font-bold text-white shadow-[0_4px_14px_-3px_rgba(249,115,22,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_7px_20px_-4px_rgba(249,115,22,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 active:translate-y-0 sm:h-9 sm:gap-2 sm:px-4 sm:text-xs md:h-10 md:px-5 md:text-sm"
+                    className="hidden sm:inline-flex group relative h-8 items-center justify-center gap-1.5 overflow-hidden rounded-full bg-linear-to-r from-orange-500 via-orange-500 to-amber-400 px-3 text-[11px] font-bold text-white shadow-[0_4px_14px_-3px_rgba(249,115,22,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_7px_20px_-4px_rgba(249,115,22,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 active:translate-y-0 sm:h-9 sm:gap-2 sm:px-4 sm:text-xs md:h-10 md:px-5 md:text-sm"
                 >
                     <span className="absolute inset-0 bg-linear-to-b from-white/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
