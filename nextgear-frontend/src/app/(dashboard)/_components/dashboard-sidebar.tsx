@@ -14,7 +14,7 @@ import {
 import { getSession } from "@/lib/core/server";
 import { Bookmark, BriefcaseBusiness, ClipboardList, Package, PlusCircle, User, Users } from "lucide-react"
 import Link from "next/link";
-import { redirect } from "next/navigation";
+
 
 
 const menuItemsByRole = {
@@ -24,7 +24,7 @@ const menuItemsByRole = {
         { name: "Profile", url: "/dashboard/customer/profile", icon: User },
     ],
     owner: [
-        { name: "Add Equipment", url: "/dashboard/owner/equipment/add", icon: PlusCircle },
+        { name: "Add Equipment", url: "/owner/addEquipment", icon: PlusCircle },
         { name: "My Equipment", url: "/dashboard/owner/equipment", icon: Package },
         { name: "My Equipment Rental", url: "/dashboard/owner/rentals", icon: ClipboardList },
         { name: "My Profile", url: "/dashboard/owner/profile", icon: User },
