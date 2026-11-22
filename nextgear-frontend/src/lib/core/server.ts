@@ -36,3 +36,16 @@ export const authMutate = async (api: string, method: string, data?: unknown) =>
     // }
     return res.json();
 }
+
+
+export const authFetch = async (api: string) => {
+    const res = await fetch(api, {
+        // headers: {
+        //     authorization: `Bearer ${token}`
+        // }
+    });
+    // if (res.status === 401 || res.status === 403) {
+    //     redirect("/unauthorized");
+    // }
+    return res.json();
+}

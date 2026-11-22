@@ -25,7 +25,7 @@ const menuItemsByRole = {
     ],
     owner: [
         { name: "Add Equipment", url: "/owner/addEquipment", icon: PlusCircle },
-        { name: "My Equipment", url: "/dashboard/owner/equipment", icon: Package },
+        { name: "My Equipment", url: "/owner/myEquipment", icon: Package },
         { name: "My Equipment Rental", url: "/dashboard/owner/rentals", icon: ClipboardList },
         { name: "My Profile", url: "/dashboard/owner/profile", icon: User },
     ],
