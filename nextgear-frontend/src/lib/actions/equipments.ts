@@ -15,3 +15,9 @@ export const deleteEquipment = async (equipId: string) => {
   const res = await authMutate(api, "DELETE");
   return res;
 }
+
+export const UpdateEquipment = async (equipId: string, editedEquipment: Record<string, string>) => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/update-equipment/${equipId}`;
+  const res = await authMutate(api, "PATCH", editedEquipment);
+  return res;
+}

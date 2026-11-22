@@ -1,19 +1,13 @@
+
+
 import Link from "next/link";
-import {
-    CheckCircle2,
-    Clock3,
-    Eye,
-    Package,
-    PackageOpen,
-    Pencil,
-    PlusCircle,
-    XCircle,
-} from "lucide-react";
+import {CheckCircle2,Clock3,Eye,Package,PackageOpen,PlusCircle,XCircle,} from "lucide-react";
 
 import { getEquipments } from "@/lib/api/equipments";
 import { getSession } from "@/lib/core/server";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import { DeleteEquipmentDialog } from "./_components/deleteEquipmentDialog";
+import EditEquipmentDialog from "./_components/editEquipmentDialog";
 
 const statusStyles: Record<string, string> = {
     pending: "bg-amber-50 text-amber-700 ring-amber-200",
@@ -62,25 +56,19 @@ const EquipmentThumb = ({
     </div>
 );
 
-const EquipmentActions = ({ id, card = false }: { id: string; card?: boolean }) => {
+const EquipmentActions = ({ equipment, card = false }: { equipment: EquipmentType; card?: boolean }) => {
     const linkClass =
         "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border px-2.5 text-[11px] font-semibold whitespace-nowrap transition-colors sm:text-xs";
 
     return (
         <div className={card ? "mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3" : "flex items-center justify-end gap-2"}>
-            <Link
-                href={`/owner/myEquipment/${id}/update`}
-                title="Update equipment"
-                className={`${linkClass} border-orange-200 bg-orange-50 text-orange-700 hover:border-orange-300 hover:bg-orange-100`}
-            >
-                <Pencil className="size-3.5" aria-hidden="true" />
-                Update
-            </Link>
 
-            <DeleteEquipmentDialog equipId={id}></DeleteEquipmentDialog>
+            <EditEquipmentDialog equipment={equipment}></EditEquipmentDialog>
+
+            <DeleteEquipmentDialog equipId={equipment._id}></DeleteEquipmentDialog>
 
             <Link
-                href={`/owner/myEquipment/${id}`}
+                href={`/owner/myEquipment/${equipment._id}`}
                 title="View equipment details"
                 className={`${linkClass} border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:bg-stone-50 hover:text-slate-900 ${card ? "col-span-2 sm:col-span-1" : ""}`}
             >
@@ -229,7 +217,7 @@ const MyEquipmentsPage = async () => {
                                                 </td>
 
                                                 <td className="px-5 py-4">
-                                                    <EquipmentActions id={equipment._id} />
+                                                    <EquipmentActions equipment={equipment} />
                                                 </td>
                                             </tr>
                                         );
@@ -305,7 +293,7 @@ const MyEquipmentsPage = async () => {
                                             </div>
                                         </dl>
 
-                                        <EquipmentActions id={equipment._id} card />
+                                        <EquipmentActions equipment={equipment} card />
                                     </article>
                                 );
                             })}
