@@ -9,3 +9,9 @@ export const createEquipment = async (newEquip: NewEquipType) => {
   const res = await authMutate(api, "POST", newEquip);
   return res;
 }
+
+export const deleteEquipment = async (equipId: string) => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/delete-equipment/${equipId}`;
+  const res = await authMutate(api, "DELETE");
+  return res;
+}

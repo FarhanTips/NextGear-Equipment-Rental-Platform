@@ -7,13 +7,13 @@ import {
     PackageOpen,
     Pencil,
     PlusCircle,
-    Trash2,
     XCircle,
 } from "lucide-react";
 
 import { getEquipments } from "@/lib/api/equipments";
 import { getSession } from "@/lib/core/server";
 import { EquipmentType } from "@/lib/types/equipmentType";
+import { DeleteEquipmentDialog } from "./_components/deleteEquipmentDialog";
 
 const statusStyles: Record<string, string> = {
     pending: "bg-amber-50 text-amber-700 ring-amber-200",
@@ -77,14 +77,7 @@ const EquipmentActions = ({ id, card = false }: { id: string; card?: boolean }) 
                 Update
             </Link>
 
-            <Link
-                href={`/owner/myEquipment/${id}/delete`}
-                title="Delete equipment"
-                className={`${linkClass} border-rose-200 bg-rose-50 text-rose-600 hover:border-rose-300 hover:bg-rose-100`}
-            >
-                <Trash2 className="size-3.5" aria-hidden="true" />
-                Delete
-            </Link>
+            <DeleteEquipmentDialog equipId={id}></DeleteEquipmentDialog>
 
             <Link
                 href={`/owner/myEquipment/${id}`}
