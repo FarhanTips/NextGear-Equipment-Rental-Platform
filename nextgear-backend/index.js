@@ -3,7 +3,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 
 const app = express();
@@ -51,14 +51,21 @@ app.post('/add-equipment', async (req, res) => {
 
 app.get('/equipments', async (req, res) => {
   const query = {};
-  if (req.query){
-    if (req.query.ownerId){
+  if (req.query) {
+    if (req.query.ownerId) {
       query.ownerId = req.query.ownerId;
     }
   }
   const result = await equipments.find(query).toArray();
   res.send(result);
 })
+
+app.delete('/delete-equipment/:id', async (req, res) => {
+  const id = req.params.id;
+  const result = await equipments.deleteOne({_id: new ObjectId(id)});
+  res.send(result);
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
