@@ -210,7 +210,7 @@ const MyEquipmentsPage = async () => {
                                                 </td>
 
                                                 <td className="px-5 py-4">
-                                                    <span className="inline-flex rounded-full px-2.5 py-1 text-xs font-medium text-stone-600">
+                                                    <span className="inline-flex rounded-full py-1 text-xs font-medium text-stone-600">
                                                         {equipment.category}
                                                     </span>
                                                 </td>
