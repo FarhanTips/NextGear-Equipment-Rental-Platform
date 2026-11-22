@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
+import { createEquipment } from "@/lib/actions/equipments";
 
 const inputClass =
     "h-11 rounded-xl border-stone-200 bg-stone-50/60 px-3.5 text-sm text-stone-900 transition-colors placeholder:text-stone-400 focus-visible:border-orange-400 focus-visible:ring-2 focus-visible:ring-orange-100";
@@ -35,6 +37,8 @@ const rentalTypes = ["Daily", "Weekly", "Monthly"];
 const conditions = ["Brand New", "Excellent", "Good", "Fair"];
 
 const AddEquipmentPage = () => {
+    const { data: session } = authClient.useSession();
+
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState("");
     const [submitting, setSubmitting] = useState(false);
@@ -95,21 +99,27 @@ const AddEquipmentPage = () => {
 
             newEquip.status = "pending";
             newEquip.image = result.data.url as string;
+            newEquip.ownerId = session?.user.id as string;
 
-            console.log("New equipment:", newEquip);
+            console.log("New equipment from form:", newEquip);
+            const postResult = await createEquipment(newEquip);
+            console.log("postResult", postResult);
+            if (postResult.insertedId) {
+                toast.add({
+                    type: "success",
+                    description: "Equipment submitted for approval.",
+                });
 
-            toast.add({
-                type: "success",
-                description: "Equipment submitted for approval.",
-            });
+                form.reset();
+                setImage(null);
+                setPreview("");
+            }
 
-            form.reset();
-            setImage(null);
-            setPreview("");
+
         } catch {
             toast.add({
                 type: "error",
-                description: "Image upload failed! Please try again.",
+                description: "Something went wrong. Try Again Later!",
             });
         } finally {
             setSubmitting(false);

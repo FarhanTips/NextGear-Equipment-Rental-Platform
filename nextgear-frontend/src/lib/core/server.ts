@@ -21,3 +21,18 @@ export const requireRole = async (role: string) => {
     }
     return session;
 }
+
+export const authMutate = async (api: string, method: string, data?: unknown) => {
+    const res = await fetch(api, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+            // authorization: `Bearer ${token}`
+        },
+        body: data ? JSON.stringify(data) : null,
+    });
+    // if (res.status === 401 || res.status === 403) {
+    //     redirect("/unauthorized");
+    // }
+    return res.json();
+}
