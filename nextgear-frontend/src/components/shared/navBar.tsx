@@ -27,7 +27,7 @@ const NavBar = () => {
     const navItems = [
         { href: "/", label: "Home", icon: House, active: homeActive },
         {
-            href: "/upcoming",
+            href: "/browse-equipments",
             label: "All Equipment",
             icon: Package,
             active: browseActive,

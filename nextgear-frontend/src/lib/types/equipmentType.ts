@@ -5,9 +5,9 @@ export interface NewEquipType {
     description: string;
     category: string;
     location: string;
-    rentalPrice: string;
+    rentalPrice: number;
     rentalType: "Daily" | "Weekly" | "Monthly";
-    availableQuantity: string;
+    availableQuantity: number;
     condition: "Brand New" | "Excellent" | "Good" | "Fair";
     brand: string;
     model: string;

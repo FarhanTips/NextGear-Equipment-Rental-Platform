@@ -98,6 +98,9 @@ const AddEquipmentPage = () => {
                 ownerId : session?.user.id,
             } as NewEquipType
 
+            newEquip.rentalPrice = Number(newEquip.rentalPrice);
+            newEquip.availableQuantity = Number(newEquip.availableQuantity);
+
             console.log("New equipment from form:", newEquip);
             const postResult = await createEquipment(newEquip);
             console.log("postResult", postResult);

@@ -85,11 +85,13 @@ const EditEquipmentForm = ({ equipment }: EditEquipmentFormProps) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
-        const editedEquipment: Record<string, string> = {};
+        const editedEquipment: Record<string, string | number> = {};
 
         formData.forEach((value, key) => {
             editedEquipment[key] = value.toString();
         });
+        editedEquipment.rentalPrice = Number(editedEquipment.rentalPrice);
+        editedEquipment.availableQuantity = Number(editedEquipment.availableQuantity);
 
         setSubmitting(true);
 
