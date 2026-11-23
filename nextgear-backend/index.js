@@ -55,6 +55,28 @@ app.get('/equipments', async (req, res) => {
     if (req.query.ownerId) {
       query.ownerId = req.query.ownerId;
     }
+
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
+    if (req.query.availableQuantity) {
+      query.availableQuantity = req.query.availableQuantity;
+    }
+    if (req.query.rentalType) {
+      query.rentalType = req.query.rentalType;
+    }
+    // Price range filter
+    if (req.query.minPrice || req.query.maxPrice) {
+      query.price = {};
+
+      if (req.query.minPrice) {
+        query.price.$gte = Number(req.query.minPrice);
+      }
+
+      if (req.query.maxPrice) {
+        query.price.$lte = Number(req.query.maxPrice);
+      }
+    }
   }
   const result = await equipments.find(query).toArray();
   res.send(result);
@@ -62,15 +84,15 @@ app.get('/equipments', async (req, res) => {
 
 app.delete('/delete-equipment/:id', async (req, res) => {
   const id = req.params.id;
-  const result = await equipments.deleteOne({_id: new ObjectId(id)});
+  const result = await equipments.deleteOne({ _id: new ObjectId(id) });
   res.send(result);
 })
 
 app.patch('/update-equipment/:id', async (req, res) => {
   const id = req.params.id;
   const result = await equipments.updateOne(
-    {_id: new ObjectId(id)},
-    {$set: req.body}
+    { _id: new ObjectId(id) },
+    { $set: req.body }
   );
   res.send(result);
 })
