@@ -89,7 +89,7 @@ const AddEquipmentPage = () => {
             }
 
             const formData = new FormData(form);
-            const newEquip: Record<string, string | number> = {};
+            const newEquip: Record<string, string | number | Date> = {};
 
             formData.forEach((value, key) => {
                 newEquip[key] = value.toString();
@@ -100,6 +100,7 @@ const AddEquipmentPage = () => {
             newEquip.image = result.data.url;
             newEquip.rentalPrice = Number(newEquip.rentalPrice);
             newEquip.availableQuantity = Number(newEquip.availableQuantity);
+            newEquip.createdAt = new Date();
 
             console.log("New equipment from form:", newEquip);
             const postResult = await createEquipment(newEquip);
@@ -378,7 +379,6 @@ const AddEquipmentPage = () => {
 
                                     <Input
                                         id="equipmentImage"
-                                        name="equipmentImage"
                                         type="file"
                                         accept="image/*"
                                         className="sr-only"
@@ -403,7 +403,6 @@ const AddEquipmentPage = () => {
 
                                     <Input
                                         id="equipmentImage"
-                                        name="equipmentImage"
                                         type="file"
                                         accept="image/*"
                                         className="sr-only"

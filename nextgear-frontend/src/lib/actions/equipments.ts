@@ -3,7 +3,7 @@
 import { authMutate } from "../core/server";
 
 
-export const createEquipment = async (newEquip: Record<string, string | number>) => {
+export const createEquipment = async (newEquip: Record<string, string | number | Date>) => {
   const api = `${process.env.NEXT_PUBLIC_API_URL}/add-equipment`;
   const res = await authMutate(api, "POST", newEquip);
   return res;

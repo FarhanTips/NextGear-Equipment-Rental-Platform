@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {CheckCircle2,Clock3,Eye,Package,PackageOpen,PlusCircle,XCircle,} from "lucide-react";
 
-import { getEquipments } from "@/lib/api/equipments";
+import { getOwnerEquipments } from "@/lib/api/equipments";
 import { getSession } from "@/lib/core/server";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import { DeleteEquipmentDialog } from "./_components/deleteEquipmentDialog";
@@ -81,7 +81,7 @@ const EquipmentActions = ({ equipment, card = false }: { equipment: EquipmentTyp
 
 const MyEquipmentsPage = async () => {
     const session = await getSession();
-    const myEquipments: EquipmentType[] = await getEquipments(`ownerId=${session?.user.id}`);
+    const myEquipments: EquipmentType[] = await getOwnerEquipments(`ownerId=${session?.user.id}`);
 
     return (
         <div className="mx-auto w-full max-w-6xl px-3 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
