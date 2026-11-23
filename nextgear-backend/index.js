@@ -51,7 +51,7 @@ app.post('/add-equipment', async (req, res) => {
 
 app.get('/equipments', async (req, res) => {
   console.log("req.query", req.query)
-  const query = {};
+  const query = {status: "Approved"};
   if (req.query) {
     if (req.query.ownerId) {
       query.ownerId = req.query.ownerId;
@@ -71,12 +71,6 @@ app.get('/equipments', async (req, res) => {
 
     if (req.query.rentalType) {
       query.rentalType = req.query.rentalType;
-    }
-    if (req.query.status) {
-      query.status = req.query.status;
-    }
-    else {
-      query.status = "Approved"
     }
 
     // Price range filter
@@ -121,6 +115,12 @@ app.get('/equipments', async (req, res) => {
   }
   console.log(query)
   const result = await equipments.find(query).sort(sortOption).toArray();
+  res.send(result);
+})
+
+app.get('/equipments/:id', async (req, res) => {
+  const id = req.params.id;
+  const result = await equipments.findOne({_id: new ObjectId(id)});
   res.send(result);
 })
 
