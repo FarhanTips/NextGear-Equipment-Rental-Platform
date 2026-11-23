@@ -1,6 +1,7 @@
 
 
-export interface NewEquipType {
+export interface EquipmentType {
+    _id: string;
     name: string;
     description: string;
     category: string;
@@ -15,9 +16,4 @@ export interface NewEquipType {
     status: "Pending" | "Approved" | "Rejected";
     image: string;
     ownerId: string;
-}
-
-
-export interface EquipmentType extends NewEquipType{
-    _id: string;
 }

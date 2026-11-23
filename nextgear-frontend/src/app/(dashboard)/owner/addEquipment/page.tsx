@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
 import { authClient } from "@/lib/auth-client";
 import { createEquipment } from "@/lib/actions/equipments";
-import { NewEquipType } from "@/lib/types/equipmentType";
 
 const inputClass =
     "h-11 rounded-xl border-stone-200 bg-stone-50/60 px-3.5 text-sm text-stone-900 transition-colors placeholder:text-stone-400 focus-visible:border-orange-400 focus-visible:ring-2 focus-visible:ring-orange-100";
@@ -90,14 +89,15 @@ const AddEquipmentPage = () => {
             }
 
             const formData = new FormData(form);
+            const newEquip: Record<string, string | number> = {};
 
-            const newEquip = {
-                ...Object.fromEntries(formData.entries()),
-                status: "Pending",
-                image: result.data.url,
-                ownerId : session?.user.id,
-            } as NewEquipType
+            formData.forEach((value, key) => {
+                newEquip[key] = value.toString();
+            });
 
+            newEquip.status = "Pending";
+            newEquip.ownerId = session?.user.id as string;
+            newEquip.image = result.data.url;
             newEquip.rentalPrice = Number(newEquip.rentalPrice);
             newEquip.availableQuantity = Number(newEquip.availableQuantity);
 
