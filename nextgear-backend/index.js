@@ -50,6 +50,7 @@ app.post('/add-equipment', async (req, res) => {
 })
 
 app.get('/equipments', async (req, res) => {
+  console.log("req.query", req.query)
   const query = {};
   if (req.query) {
     if (req.query.ownerId) {
@@ -59,26 +60,72 @@ app.get('/equipments', async (req, res) => {
     if (req.query.category) {
       query.category = req.query.category;
     }
-    if (req.query.availableQuantity) {
-      query.availableQuantity = req.query.availableQuantity;
+
+    if (req.query.availableQuantity === "low-stock") {
+      query.availableQuantity = { $gte: 1, $lte: 5 };
     }
+
+    if (req.query.availableQuantity === "full-stock") {
+      query.availableQuantity = { $gt: 5 };
+    }
+
     if (req.query.rentalType) {
       query.rentalType = req.query.rentalType;
     }
+    if (req.query.status) {
+      query.status = req.query.status;
+    }
+    else {
+      query.status = "Approved"
+    }
+
     // Price range filter
     if (req.query.minPrice || req.query.maxPrice) {
-      query.price = {};
+      query.rentalPrice = {};
 
       if (req.query.minPrice) {
-        query.price.$gte = Number(req.query.minPrice);
+        query.rentalPrice.$gte = Number(req.query.minPrice);
       }
 
       if (req.query.maxPrice) {
-        query.price.$lte = Number(req.query.maxPrice);
+        query.rentalPrice.$lte = Number(req.query.maxPrice);
       }
     }
+    // search
+    if (req.query.search) {
+      query.$or = [
+        { location: { $regex: req.query.search, $options: "i" } },
+        { name: { $regex: req.query.search, $options: "i" } },
+      ];
+    }
   }
-  const result = await equipments.find(query).toArray();
+
+  // sort 
+  let sortOption = {};
+  if (req.query.sort) {
+    if (req.query.sort === "price-asc") {
+      sortOption = { rentalPrice: 1 };
+    }
+
+    if (req.query.sort === "price-desc") {
+      sortOption = { rentalPrice: -1 };
+    }
+
+    if (req.query.sort === "newest") {
+      sortOption = { createdAt: -1 };
+    }
+
+    if (req.query.sort === "oldest") {
+      sortOption = { createdAt: 1 };
+    }
+  }
+  console.log(query)
+  const result = await equipments.find(query).sort(sortOption).toArray();
+  res.send(result);
+})
+
+app.get('/owner-equipments', async (req, res) => {
+  const result = await equipments.find().toArray();
   res.send(result);
 })
 
