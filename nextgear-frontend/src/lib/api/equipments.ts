@@ -9,6 +9,12 @@ export const getEquipments = async (query="") => {
   return res;
 }
 
+export const getEquipmentById = async (id: string) => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/equipments/${id}`;
+  const res = await authFetch(api);
+  return res;
+}
+
 export const getOwnerEquipments = async (query="") => {
   const api = `${process.env.NEXT_PUBLIC_API_URL}/owner-equipments?${query}`;
   const res = await authFetch(api);
