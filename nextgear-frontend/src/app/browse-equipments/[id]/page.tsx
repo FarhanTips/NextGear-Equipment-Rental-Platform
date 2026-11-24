@@ -15,7 +15,6 @@ export default async function EquipmentDetailsPage({ params }: EquipmentDetailsP
 
   if (!equipment) notFound();
 
-  const price = Number(equipment.rentalPrice) || 0;
   const quantity = Number(equipment.availableQuantity) || 0;
   const isAvailable = quantity > 0;
 
@@ -109,12 +108,8 @@ export default async function EquipmentDetailsPage({ params }: EquipmentDetailsP
           </div>
 
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-            <BookingSection
-              equipmentName={equipment.name}
-              rentalPrice={price}
-              rentalType={equipment.rentalType}
-              availableQuantity={quantity}
-            />
+            <BookingSection equipment={equipment}/>
+
             <FavoriteButton equipment={equipment}/>
 
             <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
