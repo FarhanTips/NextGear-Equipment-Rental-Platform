@@ -31,6 +31,7 @@ const connectedClient = await connectToMongoDB();
 const db = connectedClient.db("NextGear");
 const users = db.collection("user");
 const equipments = db.collection("equipments");
+const favorites = db.collection("favorites");
 
 
 
@@ -43,6 +44,9 @@ app.get('/users', async (req, res) => {
   res.send(result);
 })
 
+
+// equipments
+
 app.post('/add-equipment', async (req, res) => {
   const data = req.body;
   const result = await equipments.insertOne(data);
@@ -51,7 +55,7 @@ app.post('/add-equipment', async (req, res) => {
 
 app.get('/equipments', async (req, res) => {
   console.log("req.query", req.query)
-  const query = {status: "Approved"};
+  const query = { status: "Approved" };
   if (req.query) {
     if (req.query.ownerId) {
       query.ownerId = req.query.ownerId;
@@ -120,7 +124,7 @@ app.get('/equipments', async (req, res) => {
 
 app.get('/equipments/:id', async (req, res) => {
   const id = req.params.id;
-  const result = await equipments.findOne({_id: new ObjectId(id)});
+  const result = await equipments.findOne({ _id: new ObjectId(id) });
   res.send(result);
 })
 
@@ -141,6 +145,24 @@ app.patch('/update-equipment/:id', async (req, res) => {
     { _id: new ObjectId(id) },
     { $set: req.body }
   );
+  res.send(result);
+})
+
+
+// favorites
+
+app.post('/add-favorite', async (req, res) => {
+  const data = req.body;
+  const existingFav = await favorites.findOne({
+    equipmentId: data.equipmentId, customerId: data.customerId,
+  });
+
+  if (existingFav) {
+    return res.status(409).send({
+      msg: "Already added to your favorites!",
+    });
+  }
+  const result = await favorites.insertOne(data);
   res.send(result);
 })
 
