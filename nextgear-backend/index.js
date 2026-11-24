@@ -166,6 +166,24 @@ app.post('/add-favorite', async (req, res) => {
   res.send(result);
 })
 
+app.get('/my-favorites', async (req, res) => {
+  const query = {};
+  if (req.query){
+    if (req.query.customerId){
+      query.customerId = req.query.customerId
+    }
+  }
+  const result = await favorites.find(query).toArray();
+  res.send(result);
+})
+
+app.delete('/delete-favEquip/:id', async (req, res) => {
+  const id = req.params.id;
+  const result = await favorites.deleteOne({ _id: new ObjectId(id) });
+  res.send(result);
+})
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
