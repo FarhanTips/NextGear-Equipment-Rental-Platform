@@ -1,32 +1,24 @@
+
+
 "use client";
 
-import { useState } from "react";
 import { Heart } from "lucide-react";
+import { EquipmentType } from "@/lib/types/equipmentType";
+import { Button } from "@/components/ui/button";
 
-type Props = {
-  isFavorite?: boolean;
-  className?: string;
+interface FavoriteButtonProps {
+  equipment: EquipmentType;
 };
 
-export default function FavoriteButton({ isFavorite = false, className = "" }: Props) {
-  const [saved, setSaved] = useState(isFavorite);
+export default function FavoriteButton({ equipment }: FavoriteButtonProps) {
 
   return (
-    <button
-      type="button"
-      onClick={() => setSaved(!saved)}
-      aria-pressed={saved}
-      className={`inline-flex h-12 items-center justify-center gap-2 rounded-xl border px-5 text-sm font-bold transition-all duration-200 ${
-        saved
-          ? "border-orange-200 bg-orange-50 text-orange-600 hover:bg-orange-100"
-          : "border-stone-200 bg-white text-stone-600 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600"
-      } ${className}`}
-    >
-      <Heart
-        className={`size-4 ${saved ? "fill-orange-500 text-orange-500" : ""}`}
-        aria-hidden="true"
-      />
-      {saved ? "Saved to Favorites" : "Add to Favorites"}
-    </button>
+<Button
+  variant="outline"
+  className="h-12 w-full rounded-xl border-stone-200 bg-white px-5 text-stone-600 transition-all duration-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 active:scale-[0.97] active:bg-orange-100 active:text-orange-700 focus-visible:ring-2 focus-visible:ring-orange-300"
+>
+  <Heart className="size-4" aria-hidden="true" />
+  Add to Wishlist
+</Button>
   );
 }
