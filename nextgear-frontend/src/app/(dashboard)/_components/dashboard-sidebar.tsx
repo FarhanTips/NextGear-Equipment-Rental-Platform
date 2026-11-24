@@ -20,7 +20,7 @@ import Link from "next/link";
 const menuItemsByRole = {
     customer: [
         { name: "My Rentals", url: "/dashboard/customer/rentals", icon: BriefcaseBusiness },
-        { name: "Favorites", url: "/dashboard/customer/favorites", icon: Bookmark },
+        { name: "Favorites", url: "/customer/favorites", icon: Bookmark },
         { name: "Profile", url: "/dashboard/customer/profile", icon: User },
     ],
     owner: [

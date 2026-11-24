@@ -287,7 +287,7 @@ const EditEquipmentForm = ({ equipment }: EditEquipmentFormProps) => {
                                 id="availableQuantity"
                                 name="availableQuantity"
                                 type="number"
-                                min={1}
+                                min={0}
                                 defaultValue={equipment.availableQuantity}
                                 className={inputClass}
                             />

@@ -96,7 +96,7 @@ const UserInfo = () => {
 
             {/* Dashboard - Desktop */}
             <Link
-                href={session?.user.userRole}
+                href={`/${session?.user.userRole}`}
                 className="group hidden h-8 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-2.5 text-[11px] font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:bg-orange-50/60 hover:text-orange-600 hover:shadow-md active:translate-y-0 sm:inline-flex sm:h-9 sm:gap-2 sm:px-3 sm:text-xs md:h-10 md:px-4 md:text-sm"
             >
                 Dashboard
@@ -214,7 +214,7 @@ const UserInfo = () => {
 
                         <DropdownMenuItem className="group cursor-pointer rounded-xl p-0 focus:bg-orange-50">
                             <Link
-                                href={session?.user.userRole}
+                                href={`/${session?.user.userRole}`}
                                 className="flex min-h-10 w-full items-center gap-2.5 px-2 py-2 text-xs font-medium text-slate-700 transition-colors duration-200 group-focus:text-orange-700"
                             >
                                 <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-500 ring-1 ring-slate-200/60 group-focus:bg-orange-100 group-focus:text-orange-600">
