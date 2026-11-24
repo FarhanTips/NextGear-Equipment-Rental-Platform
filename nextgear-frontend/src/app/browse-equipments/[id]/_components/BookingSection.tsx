@@ -65,13 +65,14 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
 
     const bookingData = {
       equipmentId: equipment._id,
-      customerName: formData.get("customerName"),
-      email: formData.get("email"),
+      email: session?.user.email,
       address: formData.get("address"),
-      suggestion: formData.get("suggestion"),
+      additionalNotes: formData.get("additionalNotes"),
       startDate: formData.get("startDate"),
       endDate: formData.get("endDate"),
-      quantity: Number(formData.get("quantity")),
+      requiredQuantity: Number(formData.get("quantity")),
+      contactNumber: formData.get("contactNumber"),
+      customerId: session?.user.id,
       days,
       duration,
       rentalType,
@@ -148,24 +149,12 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
       </div>
 
       <div>
-        <label htmlFor="customerName" className={labelClass}>Name</label>
+        <label htmlFor="contactNumber" className={labelClass}>Contact Number</label>
         <input
-          id="customerName"
-          name="customerName"
-          type="text"
-          placeholder="Your full name"
-          required
-          className={inputClass}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="email" className={labelClass}>Email</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
+          id="contactNumber"
+          name="contactNumber"
+          type="tel"
+          placeholder="e.g. 01XXXXXXXXX"
           required
           className={inputClass}
         />
@@ -184,12 +173,12 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
       </div>
 
       <div>
-        <label htmlFor="suggestion" className={labelClass}>
-          Suggestion (optional)
+        <label htmlFor="additionalNotes" className={labelClass}>
+          Additional Notes (optional)
         </label>
         <textarea
-          id="suggestion"
-          name="suggestion"
+          id="additionalNotes"
+          name="additionalNotes"
           rows={3}
           placeholder="Anything the owner should know?"
           className={`${inputClass} resize-none`}
