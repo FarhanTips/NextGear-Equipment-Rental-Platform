@@ -4,7 +4,10 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { MongoClient, ObjectId } from 'mongodb';
+import Stripe from 'stripe';
 
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 const port = process.env.port || 5000;
@@ -32,6 +35,7 @@ const db = connectedClient.db("NextGear");
 const users = db.collection("user");
 const equipments = db.collection("equipments");
 const favorites = db.collection("favorites");
+const bookings = db.collection("bookings");
 
 
 
@@ -168,8 +172,8 @@ app.post('/add-favorite', async (req, res) => {
 
 app.get('/my-favorites', async (req, res) => {
   const query = {};
-  if (req.query){
-    if (req.query.customerId){
+  if (req.query) {
+    if (req.query.customerId) {
       query.customerId = req.query.customerId
     }
   }
@@ -183,6 +187,48 @@ app.delete('/delete-favEquip/:id', async (req, res) => {
   res.send(result);
 })
 
+// bookings
+
+app.post("/verified-bookings", async (req, res) => {
+  const { sessionId } = req.body;
+  if (!sessionId) {
+    return res.send({ success: false, msg: 'Session ID is required' });
+  }
+
+  const {
+    status,
+    payment_status,
+    payment_intent,
+    metadata,
+    customer_email,
+    amount_total,
+    currency
+  } = await stripe.checkout.sessions.retrieve(sessionId);
+
+  if (status === 'complete' && payment_status === "paid") {
+
+    const existingSessionId = await bookings.findOne({ sessionId: sessionId });
+    if (existingSessionId) {
+      return res.send({ success: false, msg: "Expired sessionId!" });
+    }
+
+    const bookingData = {
+      sessionId,
+      status,
+      payment_status,
+      payment_intent,
+      metadata,
+      customer_email,
+      paid_amount: amount_total / 100,
+      currency,
+      payment_date: new Date(),
+    }
+    const result = await bookings.insertOne(bookingData);
+    res.send({ succeess: true, msg: "Payment and Booking successfull!", result })
+  }
+
+  res.send({ success: false, msg: "payment verification failed" });
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
