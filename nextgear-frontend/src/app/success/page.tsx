@@ -1,5 +1,7 @@
 
 
+import { verifiedBooking } from '@/lib/actions/bookings'
+import { getSession } from '@/lib/core/server'
 import { stripe } from '@/lib/stripe'
 import { redirect } from 'next/navigation'
 
@@ -10,6 +12,8 @@ interface PaymentSuccessPageProps {
 
 
 export default async function PaymentSuccessPage({ searchParams }: PaymentSuccessPageProps) {
+    const userSession = await getSession();
+
     const { session_id } = await searchParams
 
     if (!session_id)
@@ -31,6 +35,10 @@ export default async function PaymentSuccessPage({ searchParams }: PaymentSucces
         return redirect('/')
     }
 
+    if (metadata?.customerId !== userSession?.user.id){
+        redirect("/unauthorized")
+    }
+
     if (status === "complete" && payment_status === "paid") {
         console.log({
             status,
@@ -41,6 +49,10 @@ export default async function PaymentSuccessPage({ searchParams }: PaymentSucces
             amount_total,
             currency,
         })
+
+        const result = await verifiedBooking(session_id as string)
+        console.log("payment success result", result);
+
 
         const total = new Intl.NumberFormat("en-US", {
             style: "currency",
