@@ -8,6 +8,7 @@ import { CalendarDays, CreditCard } from "lucide-react";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
+import { useSearchParams } from "next/navigation";
 
 const inputClass =
   "mt-1.5 w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-stone-400 focus:border-orange-400 focus:bg-white focus:ring-2 focus:ring-orange-100";
@@ -22,6 +23,15 @@ interface BookingSectionProps {
 
 export default function BookingSection({ equipment }: BookingSectionProps) {
   const { data: session } = authClient.useSession();
+
+  // Cancel booking code starts -----------------------
+  const searchParams = useSearchParams();
+  const canceled = searchParams.get("canceled");
+
+  if (canceled) {
+    console.log("Order canceled -- continue booking when you're ready.");
+  }
+  // Cancel booking code ends -----------------------
 
   const { rentalPrice, rentalType, availableQuantity } = equipment;
 
@@ -50,7 +60,7 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
 
   const total = duration * bookingInfo.quantity * rentalPrice;
 
-  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (session?.user.userRole !== "customer") {
@@ -65,14 +75,12 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
 
     const bookingData = {
       equipmentId: equipment._id,
-      email: session?.user.email,
       address: formData.get("address"),
       additionalNotes: formData.get("additionalNotes"),
       startDate: formData.get("startDate"),
       endDate: formData.get("endDate"),
       requiredQuantity: Number(formData.get("quantity")),
       contactNumber: formData.get("contactNumber"),
-      customerId: session?.user.id,
       days,
       duration,
       rentalType,
@@ -81,6 +89,19 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
     };
 
     console.log("bookingData", bookingData);
+
+    const form = document.createElement("form");
+    form.action = "/api/checkout_sessions";
+    form.method = "POST";
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "bookingData";
+    input.value = JSON.stringify(bookingData);
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
   };
 
   return (
