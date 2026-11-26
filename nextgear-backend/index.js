@@ -132,8 +132,14 @@ app.get('/equipments/:id', async (req, res) => {
   res.send(result);
 })
 
-app.get('/owner-equipments', async (req, res) => {
+app.get('/all-equipments', async (req, res) => {
   const result = await equipments.find().toArray();
+  res.send(result);
+})
+
+app.get('/owner-equipments/:id', async (req, res) => {
+  const id = req.params.id;
+  const result = await equipments.find({ownerId: id}).toArray();
   res.send(result);
 })
 
