@@ -1,6 +1,6 @@
 
 
-import {Calendar,BriefcaseBusiness,CheckCircle2,XCircle,AlertCircle,Clock,Package,type LucideIcon,} from "lucide-react";
+import { Calendar, BriefcaseBusiness, CheckCircle2, XCircle, AlertCircle, Clock, Package, type LucideIcon, } from "lucide-react";
 import { getEquipmentById } from "@/lib/api/equipments";
 import { getBookingsByUserId } from "@/lib/api/bookings";
 import { getSession } from "@/lib/core/server";
@@ -106,6 +106,7 @@ const columns = [
     "Rental Start Date",
     "Rental End Date",
     "Booking Date",
+    "Required Quantity",
     "Total Amount",
     "Payment Status",
     "Booking Status",
@@ -201,6 +202,9 @@ const MyRentalsPage = async () => {
                                                 <DateCell date={booking.payment_date} />
                                             </td>
                                             <td className="px-5 py-4 whitespace-nowrap font-semibold text-slate-900">
+                                                {booking.metadata.requiredQuantity}
+                                            </td>
+                                            <td className="px-5 py-4 whitespace-nowrap font-semibold text-slate-900">
                                                 {formatCurrency(booking.paid_amount)}
                                             </td>
                                             <td className="px-5 py-4 whitespace-nowrap">
@@ -229,7 +233,9 @@ const MyRentalsPage = async () => {
                                             { label: "Rental Start", value: formatDate(booking.metadata.startDate) },
                                             { label: "Rental End", value: formatDate(booking.metadata.endDate) },
                                             { label: "Booking Date", value: formatDate(booking.payment_date) },
+                                            { label: "Required Quantity", value: booking.metadata.requiredQuantity },
                                             { label: "Total Amount", value: formatCurrency(booking.paid_amount) },
+                                            { label: "Payment Status", value: booking.payment_status },
                                         ].map((item) => (
                                             <div
                                                 key={item.label}
@@ -244,14 +250,6 @@ const MyRentalsPage = async () => {
                                             </div>
                                         ))}
 
-                                        <div className="col-span-2 rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100 sm:col-span-4">
-                                            <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                Payment Status
-                                            </dt>
-                                            <dd className="mt-1">
-                                                <StatusBadge status={booking.payment_status} />
-                                            </dd>
-                                        </div>
                                     </dl>
                                 </article>
                             ))}
