@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Eye, Package, PackageOpen } from "lucide-react";
 
-import { getEquipments } from "@/lib/api/equipments";
+import { getAllEquipments } from "@/lib/api/equipments";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import EquipmentActions from "./_components/equipmentActions";
 import StatusSelect from "./_components/statusSelect";
@@ -38,7 +38,7 @@ const ViewDetails = ({ id }: { id: string }) => (
 );
 
 const AdminAllEquipmentsPage = async () => {
-    const allEquipments: EquipmentType[] = await getEquipments();
+    const allEquipments: EquipmentType[] = await getAllEquipments();
 
     return (
         <div className="mx-auto w-full max-w-7xl px-3 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
@@ -121,11 +121,12 @@ const AdminAllEquipmentsPage = async () => {
                                                             <p className="truncate font-semibold text-slate-900">
                                                                 {equipment.name}
                                                             </p>
-                                                            {(equipment.model || equipment.brand) && (
-                                                                <div className="mt-0.5 flex items-center justify-between gap-2 text-xs text-stone-500">
-                                                                    <span className="truncate">{equipment.model || "—"}</span>
-                                                                    <span className="truncate text-right">{equipment.brand || "—"}</span>
-                                                                </div>
+                                                            {(equipment.brand || equipment.model) && (
+                                                                <p className="mt-0.5 truncate text-xs text-stone-500">
+                                                                    {[equipment.brand, equipment.model]
+                                                                        .filter(Boolean)
+                                                                        .join(" · ")}
+                                                                </p>
                                                             )}
                                                         </div>
                                                     </div>
@@ -191,11 +192,12 @@ const AdminAllEquipmentsPage = async () => {
                                                 <h2 className="truncate text-sm font-bold text-slate-900 sm:text-base">
                                                     {equipment.name}
                                                 </h2>
-                                                {(equipment.model || equipment.brand) && (
-                                                    <div className="mt-0.5 flex items-center justify-between gap-2 text-[11px] text-stone-500 sm:text-xs">
-                                                        <span className="truncate">{equipment.model || "—"}</span>
-                                                        <span className="truncate text-right">{equipment.brand || "—"}</span>
-                                                    </div>
+                                                {(equipment.brand || equipment.model) && (
+                                                    <p className="mt-0.5 truncate text-[11px] text-stone-500 sm:text-xs">
+                                                        {[equipment.brand, equipment.model]
+                                                            .filter(Boolean)
+                                                            .join(" · ")}
+                                                    </p>
                                                 )}
                                             </div>
                                         </div>
