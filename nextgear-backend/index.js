@@ -230,6 +230,12 @@ app.post("/verified-bookings", async (req, res) => {
   res.send({ success: false, msg: "payment verification failed" });
 })
 
+app.get("/rentals/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await bookings.find({"metadata.customerId": id}).toArray();
+  res.send(result);
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
