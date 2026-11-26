@@ -20,3 +20,9 @@ export const UpdateEquipment = async (equipId: string, editedEquipment: Record<s
   const res = await authMutate(api, "PATCH", editedEquipment);
   return res;
 }
+
+export const UpdateEquipmentStatus = async (equipId: string, equipStatus: string) => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/update-equipment-status/${equipId}`;
+  const res = await authMutate(api, "PATCH", {status: equipStatus});
+  return res;
+}

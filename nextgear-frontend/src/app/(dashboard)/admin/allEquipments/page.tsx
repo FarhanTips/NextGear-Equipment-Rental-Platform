@@ -159,7 +159,7 @@ const AdminAllEquipmentsPage = async () => {
                                                 <td className="px-5 py-4">
                                                     <StatusSelect
                                                         equipmentId={equipment._id}
-                                                        status={equipment.status}
+                                                        equipStatus={equipment.status}
                                                     />
                                                 </td>
 
@@ -253,7 +253,7 @@ const AdminAllEquipmentsPage = async () => {
                                                     <dd className="mt-1">
                                                         <StatusSelect
                                                             equipmentId={equipment._id}
-                                                            status={equipment.status}
+                                                            equipStatus={equipment.status}
                                                         />
                                                     </dd>
                                                 </div>
