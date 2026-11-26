@@ -1,7 +1,7 @@
 
 
 import Link from "next/link";
-import {CheckCircle2,Clock3,Eye,Package,PackageOpen,PlusCircle,XCircle,} from "lucide-react";
+import { CheckCircle2, Clock3, Eye, Package, PackageOpen, PlusCircle, XCircle, } from "lucide-react";
 
 import { getOwnerEquipments } from "@/lib/api/equipments";
 import { getSession } from "@/lib/core/server";
@@ -68,7 +68,7 @@ const EquipmentActions = ({ equipment, card = false }: { equipment: EquipmentTyp
             <DeleteEquipmentDialog equipId={equipment._id}></DeleteEquipmentDialog>
 
             <Link
-                href={`/owner/myEquipment/${equipment._id}`}
+                href={`/browse-equipments/${equipment._id}`}
                 title="View equipment details"
                 className={`${linkClass} border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:bg-stone-50 hover:text-slate-900 ${card ? "col-span-2 sm:col-span-1" : ""}`}
             >
@@ -227,73 +227,84 @@ const MyEquipmentsPage = async () => {
                         </div>
 
                         {/* Mobile & tablet cards */}
-                        <div className="divide-y divide-stone-100 xl:hidden">
-                            {myEquipments.map((equipment) => {
+                        {/* প্যারেন্ট পেজ/সেকশনে bg-stone-100 বা bg-slate-100 থাকলে পার্থক্য সবচেয়ে ভালো বোঝা যাবে */}
+                        <div className="flex flex-col gap-4 rounded-2xl bg-stone-100/80 p-3 sm:gap-5 sm:p-4 xl:hidden">
+                            {myEquipments.map((equipment, index) => {
                                 const status = equipment.status || "Pending";
                                 const price = Number(equipment.rentalPrice) || 0;
 
                                 return (
-                                    <article key={equipment._id} className="p-3.5 sm:p-5">
-                                        <div className="flex items-start gap-3">
-                                            <EquipmentThumb
-                                                equipment={equipment}
-                                                className="size-12 sm:size-14"
-                                            />
-
-                                            <div className="min-w-0 flex-1">
-                                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                                    <h2 className="min-w-0 truncate text-sm font-bold text-slate-900 sm:text-base">
-                                                        {equipment.name}
-                                                    </h2>
-                                                    <StatusBadge status={status} />
-                                                </div>
-
-                                                {(equipment.brand || equipment.model) && (
-                                                    <p className="mt-1 truncate text-[11px] text-stone-500 sm:text-xs">
-                                                        {[equipment.brand, equipment.model]
-                                                            .filter(Boolean)
-                                                            .join(" · ")}
-                                                    </p>
-                                                )}
-                                            </div>
+                                    <article
+                                        key={equipment._id}
+                                        className="overflow-hidden rounded-2xl border border-stone-300 bg-white shadow-sm"
+                                    >
+                                        {/* কার্ডের ওপরের ছোট আইডেন্টিফায়ার বার */}
+                                        <div className="flex items-center justify-between border-b border-stone-100 bg-stone-50/90 px-3.5 py-2 text-[11px] font-medium text-stone-500 sm:px-5">
+                                            <span>Item #{index + 1}</span>
+                                            <StatusBadge status={status} />
                                         </div>
 
-                                        <dl className="mt-3.5 grid grid-cols-2 gap-2 sm:mt-4 sm:grid-cols-3 sm:gap-2.5">
-                                            <div className="col-span-2 rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100 sm:col-span-1">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Category
-                                                </dt>
-                                                <dd className="mt-1 truncate text-xs font-semibold text-slate-800 sm:text-sm">
-                                                    {equipment.category}
-                                                </dd>
+                                        <div className="p-3.5 sm:p-5">
+                                            <div className="flex items-start gap-3">
+                                                <EquipmentThumb
+                                                    equipment={equipment}
+                                                    className="size-12 shrink-0 rounded-xl sm:size-14"
+                                                />
+
+                                                <div className="min-w-0 flex-1">
+                                                    <h2 className="truncate text-sm font-bold text-slate-900 sm:text-base">
+                                                        {equipment.name}
+                                                    </h2>
+
+                                                    {(equipment.brand || equipment.model) && (
+                                                        <p className="mt-0.5 truncate text-[11px] text-stone-500 sm:text-xs">
+                                                            {[equipment.brand, equipment.model]
+                                                                .filter(Boolean)
+                                                                .join(" · ")}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
 
-                                            <div className="rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Rental Price
-                                                </dt>
-                                                <dd className="mt-1 text-xs font-semibold whitespace-nowrap text-slate-800 sm:text-sm">
-                                                    ${price.toLocaleString()}
-                                                    <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
-                                                        /{rentalPeriod(equipment.rentalType)}
-                                                    </span>
-                                                </dd>
-                                            </div>
+                                            <dl className="mt-3.5 grid grid-cols-2 gap-2 sm:mt-4 sm:grid-cols-3 sm:gap-2.5">
+                                                <div className="col-span-2 rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-200/70 sm:col-span-1">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Category
+                                                    </dt>
+                                                    <dd className="mt-1 truncate text-xs font-semibold text-slate-800 sm:text-sm">
+                                                        {equipment.category}
+                                                    </dd>
+                                                </div>
 
-                                            <div className="rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Available
-                                                </dt>
-                                                <dd className="mt-1 text-xs font-semibold text-slate-800 sm:text-sm">
-                                                    {equipment.availableQuantity}
-                                                    <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
-                                                        units
-                                                    </span>
-                                                </dd>
-                                            </div>
-                                        </dl>
+                                                <div className="rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-200/70">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Rental Price
+                                                    </dt>
+                                                    <dd className="mt-1 text-xs font-semibold whitespace-nowrap text-slate-800 sm:text-sm">
+                                                        ${price.toLocaleString()}
+                                                        <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
+                                                            /{rentalPeriod(equipment.rentalType)}
+                                                        </span>
+                                                    </dd>
+                                                </div>
 
-                                        <EquipmentActions equipment={equipment} card />
+                                                <div className="rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-200/70">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Available
+                                                    </dt>
+                                                    <dd className="mt-1 text-xs font-semibold text-slate-800 sm:text-sm">
+                                                        {equipment.availableQuantity}
+                                                        <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
+                                                            units
+                                                        </span>
+                                                    </dd>
+                                                </div>
+                                            </dl>
+
+                                            <div className="mt-3.5 border-t border-stone-100 pt-3">
+                                                <EquipmentActions equipment={equipment} card />
+                                            </div>
+                                        </div>
                                     </article>
                                 );
                             })}
