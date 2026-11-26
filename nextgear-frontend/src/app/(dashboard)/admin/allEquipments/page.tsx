@@ -4,8 +4,9 @@ import { Eye, Package, PackageOpen } from "lucide-react";
 import { getAllEquipments } from "@/lib/api/equipments";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import StatusSelect from "./_components/statusSelect";
-import EditEquipmentDialog from "../../owner/myEquipment/_components/editEquipmentDialog";
-import { DeleteEquipmentDialog } from "../../owner/myEquipment/_components/deleteEquipmentDialog";
+import { DeleteEquipmentDialog } from "../../_components/shared/deleteEquipmentDialog";
+import EditEquipmentDialog from "../../_components/shared/editEquipmentDialog";
+
 
 const rentalPeriod = (type: string) => {
     if (type === "Weekly") return "week";

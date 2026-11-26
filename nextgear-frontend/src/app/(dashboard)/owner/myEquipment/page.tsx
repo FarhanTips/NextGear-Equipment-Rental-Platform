@@ -6,8 +6,8 @@ import { CheckCircle2, Clock3, Eye, Package, PackageOpen, PlusCircle, XCircle, }
 import { getOwnerEquipments } from "@/lib/api/equipments";
 import { getSession } from "@/lib/core/server";
 import { EquipmentType } from "@/lib/types/equipmentType";
-import { DeleteEquipmentDialog } from "./_components/deleteEquipmentDialog";
-import EditEquipmentDialog from "./_components/editEquipmentDialog";
+import { DeleteEquipmentDialog } from "../../_components/shared/deleteEquipmentDialog";
+import EditEquipmentDialog from "../../_components/shared/editEquipmentDialog";
 
 const statusStyles: Record<string, string> = {
     pending: "bg-amber-50 text-amber-700 ring-amber-200",

@@ -41,7 +41,7 @@ export function DeleteEquipmentDialog({ equipId }: DeleteEquipmentDialogProps) {
                     <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
                         <Trash2Icon />
                     </AlertDialogMedia>
-                    <AlertDialogTitle>Delete chat?</AlertDialogTitle>
+                    <AlertDialogTitle>Delete Equipment?</AlertDialogTitle>
                     <AlertDialogDescription>
                         This will permanently delete this Equipment from the DataBase.
                     </AlertDialogDescription>
