@@ -81,7 +81,7 @@ const EquipmentActions = ({ equipment, card = false }: { equipment: EquipmentTyp
 
 const MyEquipmentsPage = async () => {
     const session = await getSession();
-    const myEquipments: EquipmentType[] = await getOwnerEquipments(`ownerId=${session?.user.id}`);
+    const myEquipments: EquipmentType[] = await getOwnerEquipments(session?.user.id as string);
 
     return (
         <div className="mx-auto w-full max-w-6xl px-3 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">

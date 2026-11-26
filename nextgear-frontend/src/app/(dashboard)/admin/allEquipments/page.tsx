@@ -3,8 +3,9 @@ import { Eye, Package, PackageOpen } from "lucide-react";
 
 import { getAllEquipments } from "@/lib/api/equipments";
 import { EquipmentType } from "@/lib/types/equipmentType";
-import EquipmentActions from "./_components/equipmentActions";
 import StatusSelect from "./_components/statusSelect";
+import EditEquipmentDialog from "../../owner/myEquipment/_components/editEquipmentDialog";
+import { DeleteEquipmentDialog } from "../../owner/myEquipment/_components/deleteEquipmentDialog";
 
 const rentalPeriod = (type: string) => {
     if (type === "Weekly") return "week";
@@ -113,7 +114,7 @@ const AdminAllEquipmentsPage = async () => {
 
                                         return (
                                             <tr key={equipment._id} className="transition-colors hover:bg-orange-50/30">
-                                                <td className="px-5 py-4">
+                                                <td className="px-4 py-4">
                                                     <div className="flex items-center gap-3">
                                                         <EquipmentThumb equipment={equipment} className="size-11" />
 
@@ -133,7 +134,7 @@ const AdminAllEquipmentsPage = async () => {
                                                 </td>
 
                                                 <td className="px-5 py-4">
-                                                    <span className="inline-flex rounded-full bg-stone-100 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-stone-600">
+                                                    <span className="inline-flex rounded-full pr-2 py-1 text-xs font-medium whitespace-nowrap text-stone-600">
                                                         {equipment.category}
                                                     </span>
                                                 </td>
@@ -166,7 +167,11 @@ const AdminAllEquipmentsPage = async () => {
                                                 </td>
 
                                                 <td className="px-5 py-4 whitespace-nowrap">
-                                                    <EquipmentActions equipmentId={equipment._id} />
+                                                    <div className="flex items-center justify-end gap-2 whitespace-nowrap">
+                                                        <EditEquipmentDialog equipment={equipment}></EditEquipmentDialog>
+
+                                                        <DeleteEquipmentDialog equipId={equipment._id}></DeleteEquipmentDialog>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         );
@@ -176,82 +181,90 @@ const AdminAllEquipmentsPage = async () => {
                         </div>
 
                         {/* Mobile & tablet cards */}
-                        <div className="divide-y divide-stone-100 xl:hidden">
+                        <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2 sm:gap-4 sm:p-4 xl:hidden">
                             {allEquipments.map((equipment) => {
                                 const price = Number(equipment.rentalPrice) || 0;
 
                                 return (
-                                    <article key={equipment._id} className="p-3.5 sm:p-5">
-                                        <div className="flex items-start gap-3">
-                                            <EquipmentThumb
-                                                equipment={equipment}
-                                                className="size-12 sm:size-14"
-                                            />
+                                    <article
+                                        key={equipment._id}
+                                        className="flex flex-col justify-between rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs transition-shadow hover:shadow-sm sm:p-5"
+                                    >
+                                        <div>
+                                            <div className="flex items-start gap-3">
+                                                <EquipmentThumb
+                                                    equipment={equipment}
+                                                    className="size-12 shrink-0 rounded-xl sm:size-14"
+                                                />
 
-                                            <div className="min-w-0 flex-1">
-                                                <h2 className="truncate text-sm font-bold text-slate-900 sm:text-base">
-                                                    {equipment.name}
-                                                </h2>
-                                                {(equipment.brand || equipment.model) && (
-                                                    <p className="mt-0.5 truncate text-[11px] text-stone-500 sm:text-xs">
-                                                        {[equipment.brand, equipment.model]
-                                                            .filter(Boolean)
-                                                            .join(" · ")}
-                                                    </p>
-                                                )}
+                                                <div className="min-w-0 flex-1">
+                                                    <h2 className="truncate text-sm font-bold text-slate-900 sm:text-base">
+                                                        {equipment.name}
+                                                    </h2>
+                                                    {(equipment.brand || equipment.model) && (
+                                                        <p className="mt-0.5 truncate text-[11px] text-stone-500 sm:text-xs">
+                                                            {[equipment.brand, equipment.model]
+                                                                .filter(Boolean)
+                                                                .join(" · ")}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
+
+                                            <dl className="mt-3.5 grid grid-cols-2 gap-2 sm:mt-4 sm:gap-2.5">
+                                                <div className="rounded-xl bg-stone-50/90 px-3 py-2 ring-1 ring-stone-200/70">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Category
+                                                    </dt>
+                                                    <dd className="mt-1 truncate text-xs font-semibold text-slate-800 sm:text-sm">
+                                                        {equipment.category}
+                                                    </dd>
+                                                </div>
+
+                                                <div className="rounded-xl bg-stone-50/90 px-3 py-2 ring-1 ring-stone-200/70">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Rental Price
+                                                    </dt>
+                                                    <dd className="mt-1 text-xs font-semibold whitespace-nowrap text-slate-800 sm:text-sm">
+                                                        ${price.toLocaleString()}
+                                                        <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
+                                                            /{rentalPeriod(equipment.rentalType)}
+                                                        </span>
+                                                    </dd>
+                                                </div>
+
+                                                <div className="rounded-xl bg-stone-50/90 px-3 py-2 ring-1 ring-stone-200/70">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Available
+                                                    </dt>
+                                                    <dd className="mt-1 text-xs font-semibold text-slate-800 sm:text-sm">
+                                                        {equipment.availableQuantity}
+                                                        <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
+                                                            units
+                                                        </span>
+                                                    </dd>
+                                                </div>
+
+                                                <div className="rounded-xl bg-stone-50/90 px-3 py-2 ring-1 ring-stone-200/70">
+                                                    <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
+                                                        Status
+                                                    </dt>
+                                                    <dd className="mt-1">
+                                                        <StatusSelect
+                                                            equipmentId={equipment._id}
+                                                            status={equipment.status}
+                                                        />
+                                                    </dd>
+                                                </div>
+                                            </dl>
                                         </div>
 
-                                        <dl className="mt-3.5 grid grid-cols-2 gap-2 sm:mt-4 sm:grid-cols-3 sm:gap-2.5">
-                                            <div className="col-span-2 rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100 sm:col-span-1">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Category
-                                                </dt>
-                                                <dd className="mt-1 truncate text-xs font-semibold text-slate-800 sm:text-sm">
-                                                    {equipment.category}
-                                                </dd>
-                                            </div>
-
-                                            <div className="rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Rental Price
-                                                </dt>
-                                                <dd className="mt-1 text-xs font-semibold whitespace-nowrap text-slate-800 sm:text-sm">
-                                                    ${price.toLocaleString()}
-                                                    <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
-                                                        /{rentalPeriod(equipment.rentalType)}
-                                                    </span>
-                                                </dd>
-                                            </div>
-
-                                            <div className="rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Available
-                                                </dt>
-                                                <dd className="mt-1 text-xs font-semibold text-slate-800 sm:text-sm">
-                                                    {equipment.availableQuantity}
-                                                    <span className="ml-1 text-[10px] font-normal text-stone-400 sm:text-xs">
-                                                        units
-                                                    </span>
-                                                </dd>
-                                            </div>
-
-                                            <div className="col-span-2 rounded-xl bg-stone-50 px-3 py-2 ring-1 ring-stone-100 sm:col-span-1">
-                                                <dt className="text-[9px] font-bold tracking-widest text-stone-400 uppercase sm:text-[10px]">
-                                                    Status
-                                                </dt>
-                                                <dd className="mt-1">
-                                                    <StatusSelect
-                                                        equipmentId={equipment._id}
-                                                        status={equipment.status}
-                                                    />
-                                                </dd>
-                                            </div>
-                                        </dl>
-
-                                        <div className="mt-3.5 flex flex-col gap-2 border-t border-stone-100 pt-3">
+                                        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-stone-100 pt-3">
                                             <ViewDetails id={equipment._id} />
-                                            <EquipmentActions equipmentId={equipment._id} />
+                                            <div className="ml-auto flex items-center gap-1.5 whitespace-nowrap">
+                                                <EditEquipmentDialog equipment={equipment}></EditEquipmentDialog>
+                                                <DeleteEquipmentDialog equipId={equipment._id}></DeleteEquipmentDialog>
+                                            </div>
                                         </div>
                                     </article>
                                 );

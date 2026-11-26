@@ -15,8 +15,14 @@ export const getEquipmentById = async (id: string) => {
   return res;
 }
 
-export const getOwnerEquipments = async (query="") => {
-  const api = `${process.env.NEXT_PUBLIC_API_URL}/owner-equipments?${query}`;
+export const getOwnerEquipments = async (ownerId: string) => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/owner-equipments/${ownerId}`;
+  const res = await authFetch(api);
+  return res;
+}
+
+export const getAllEquipments = async () => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/all-equipments`;
   const res = await authFetch(api);
   return res;
 }

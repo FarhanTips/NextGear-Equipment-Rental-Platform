@@ -31,7 +31,7 @@ const menuItemsByRole = {
     ],
     admin: [
         { name: "All Users", url: "/dashboard/admin/users", icon: Users },
-        { name: "All Equipment", url: "/dashboard/admin/equipment", icon: Package },
+        { name: "All Equipment", url: "/admin/allEquipments", icon: Package },
         { name: "All Rentals", url: "/dashboard/admin/rentals", icon: ClipboardList },
         { name: "My Profile", url: "/dashboard/admin/profile", icon: User },
     ],
