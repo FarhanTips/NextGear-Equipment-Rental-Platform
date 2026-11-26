@@ -132,14 +132,10 @@ app.get('/equipments/:id', async (req, res) => {
   res.send(result);
 })
 
-app.get('/all-equipments', async (req, res) => {
-  const result = await equipments.find().toArray();
-  res.send(result);
-})
 
 app.get('/owner-equipments/:id', async (req, res) => {
   const id = req.params.id;
-  const result = await equipments.find({ownerId: id}).toArray();
+  const result = await equipments.find({ ownerId: id }).toArray();
   res.send(result);
 })
 
@@ -158,6 +154,23 @@ app.patch('/update-equipment/:id', async (req, res) => {
   res.send(result);
 })
 
+app.get('/all-equipments', async (req, res) => {
+  const result = await equipments.find().toArray();
+  res.send(result);
+})
+
+app.patch("/update-equipment-status/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await equipments.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        status: req.body.status
+      }
+    }
+  );
+  res.send(result);
+});
 
 // favorites
 
@@ -238,7 +251,7 @@ app.post("/verified-bookings", async (req, res) => {
 
 app.get("/rentals/:id", async (req, res) => {
   const id = req.params.id;
-  const result = await bookings.find({"metadata.customerId": id}).toArray();
+  const result = await bookings.find({ "metadata.customerId": id }).toArray();
   res.send(result);
 })
 
