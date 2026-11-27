@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {ArrowLeft,BadgeCheck,Boxes,CalendarDays,ChevronRight,FileText,Gauge,Layers,MapPin,Package,ShieldCheck,Tag,UserRound,} from "lucide-react";
+import { ArrowLeft, BadgeCheck, Boxes, CalendarDays, ChevronRight, FileText, Gauge, Layers, MapPin, Package, ShieldCheck, Tag } from "lucide-react";
 
 import { getEquipmentById } from "@/lib/api/equipments";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import BookingSection from "./_components/BookingSection";
 import FavoriteButton from "./_components/FavoriteButton";
+import { getUserById } from "@/lib/api/users";
+import { UserType } from "@/lib/types/userType";
+import Image from "next/image";
 
-interface EquipmentDetailsPageProps  { params: Promise<{ id: string }> };
+interface EquipmentDetailsPageProps { params: Promise<{ id: string }> };
 
 export default async function EquipmentDetailsPage({ params }: EquipmentDetailsPageProps) {
   const { id } = await params;
@@ -18,10 +21,7 @@ export default async function EquipmentDetailsPage({ params }: EquipmentDetailsP
   const quantity = Number(equipment.availableQuantity) || 0;
   const isAvailable = quantity > 0;
 
-  const owner = (equipment as EquipmentType & { owner?: { name?: string; email?: string } }).owner;
-  const ownerName = owner?.name || "Equipment Owner";
-  const ownerEmail = owner?.email || "Contact details shared after booking";
-  const ownerId = equipment.ownerId || "Not provided";
+  const owner: UserType = await getUserById(equipment.ownerId);
 
   const specs = [
     { label: "Category", value: equipment.category, icon: Layers },
@@ -108,26 +108,61 @@ export default async function EquipmentDetailsPage({ params }: EquipmentDetailsP
           </div>
 
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-            <BookingSection equipment={equipment}/>
+            <BookingSection equipment={equipment} />
 
-            <FavoriteButton equipment={equipment}/>
+            <FavoriteButton equipment={equipment} />
 
-            <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
-              <h2 className="text-base font-bold text-slate-900 sm:text-lg">Owner information</h2>
-              <div className="mt-4 flex items-center gap-3">
-                <div className="grid size-12 shrink-0 place-items-center rounded-full bg-linear-to-br from-orange-500 to-amber-400 text-white shadow-md shadow-orange-500/20">
-                  <UserRound className="size-6" aria-hidden="true" />
-                </div>
-                <div className="min-w-0">
-                  <p className="flex items-center gap-1.5 truncate text-sm font-bold text-slate-900">{ownerName} <BadgeCheck className="size-4 shrink-0 text-emerald-500" aria-hidden="true" /></p>
-                  <p className="truncate text-xs text-stone-500">{ownerEmail}</p>
+            {/* Owner Info */}
+            <div className="rounded-2xl border border-stone-200/90 bg-white p-3.5 shadow-sm sm:p-4">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-bold tracking-tight text-slate-900 sm:text-base">
+                  Owner information
+                </h2>
+              </div>
+
+              <div className="mt-2.5 flex items-center gap-2.5 rounded-xl border border-stone-100 bg-stone-50/70 p-2 sm:mt-3 sm:gap-3 sm:p-2.5">
+                <Image
+                  src={owner.image}
+                  alt={owner.name || "Owner avatar"}
+                  width={44}
+                  height={44}
+                  className="size-10 shrink-0 rounded-full object-cover ring-2 ring-orange-500/25 sm:size-11"
+                />
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1">
+                    <p className="truncate text-xs font-bold text-slate-900 sm:text-sm">
+                      {owner.name}
+                    </p>
+                    <BadgeCheck
+                      className="size-3.5 shrink-0 text-emerald-500"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="truncate text-[11px] text-stone-500 sm:text-xs">
+                    {owner.email}
+                  </p>
                 </div>
               </div>
-              <div className="mt-4 space-y-2 rounded-2xl bg-stone-50 p-3 text-xs text-stone-500">
-                <div className="flex items-center justify-between gap-3"><span>Owner ID</span><span className="max-w-[60%] truncate font-medium text-stone-700">{ownerId}</span></div>
-                <div className="flex items-center justify-between gap-3"><span>Listing status</span><span className="font-semibold text-emerald-600">{equipment.status}</span></div>
-              </div>
+
+              <dl className="mt-2.5 divide-y divide-stone-200/70 rounded-xl bg-stone-50 px-2.5 py-0.5 ring-1 ring-stone-100 sm:mt-3 sm:px-3">
+                <div className="flex items-center justify-between gap-2 py-1.5 text-[11px] sm:py-2 sm:text-xs">
+                  <dt className="font-medium text-stone-500">Owner ID</dt>
+                  <dd className="max-w-[65%] truncate font-mono text-[10px] font-medium text-stone-700 sm:text-[11px]">
+                    {owner._id}
+                  </dd>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 py-1.5 text-[11px] sm:py-2 sm:text-xs">
+                  <dt className="font-medium text-stone-500">Equipment status</dt>
+                  <dd className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-200/80 sm:text-[11px]">
+                    <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                    {equipment.status}
+                  </dd>
+                </div>
+              </dl>
             </div>
+
           </aside>
         </div>
       </div>

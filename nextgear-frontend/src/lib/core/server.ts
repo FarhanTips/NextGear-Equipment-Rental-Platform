@@ -4,7 +4,7 @@
 
 import { headers } from "next/headers";
 import { auth } from "../auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export const getSession = async () => {
     const session = await auth.api.getSession({
@@ -47,5 +47,12 @@ export const authFetch = async (api: string) => {
     // if (res.status === 401 || res.status === 403) {
     //     redirect("/unauthorized");
     // }
+    console.log("res authFetcg", res)
+    if (res.status === 404) {
+        notFound();
+    }
+    if (!res.ok) {
+        notFound();
+    }
     return res.json();
 }
