@@ -43,10 +43,20 @@ app.get('/', (req, res) => {
   res.send('NextGear Backend is working!')
 })
 
+// users
+
 app.get('/users', async (req, res) => {
-  const result = await users.find().toArray();
+  const result = await users.find({},
+    {projection: {
+        name: 1,
+        email: 1,
+        userRole: 1,
+        image: 1,
+        createdAt: 1,
+      }}).toArray();
+
   res.send(result);
-})
+});
 
 app.get('/users/:id', async (req, res) => {
   const id = req.params.id;
@@ -56,6 +66,19 @@ app.get('/users/:id', async (req, res) => {
   );
   res.send(result);
 })
+
+app.patch('/update-userRole/:id', async (req, res) => {
+  const id = req.params.id;
+
+  const result = await users.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: { userRole: req.body.userRole }
+    }
+  );
+
+  res.send(result);
+});
 
 
 // equipments
