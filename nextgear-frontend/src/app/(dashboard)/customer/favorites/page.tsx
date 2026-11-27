@@ -204,13 +204,16 @@ const FavoritesPage = async () => {
                         </div>
 
                         {/* Mobile & tablet cards */}
-                        <div className="divide-y divide-stone-100 xl:hidden">
+                        <div className="space-y-3 p-3 sm:space-y-4 sm:p-4 xl:hidden">
                             {favoriteEquipments.map((equipment, idx) => {
                                 const price = Number(equipment.rentalPrice) || 0;
                                 const quantity = Number(equipment.availableQuantity) || 0;
 
                                 return (
-                                    <article key={equipment._id} className="p-3.5 sm:p-5">
+                                    <article
+                                        key={equipment._id}
+                                        className="rounded-2xl border border-stone-200/90 bg-white p-3.5 shadow-sm transition-shadow hover:shadow-md sm:p-5"
+                                    >
                                         <div className="flex items-start gap-3">
                                             <EquipmentThumb
                                                 equipment={equipment}
@@ -287,7 +290,6 @@ const FavoritesPage = async () => {
                                             </Link>
 
                                             <RemoveFavoriteDialog favEquipId={myFavorites[idx]._id}></RemoveFavoriteDialog>
-
                                         </div>
                                     </article>
                                 );

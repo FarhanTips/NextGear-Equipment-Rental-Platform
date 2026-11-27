@@ -124,6 +124,8 @@ const MyRentalsPage = async () => {
         })
     );
 
+    console.log("bookingsWithEquipment", bookingsWithEquipment)
+
     return (
         <div className="mx-auto w-full max-w-7xl px-3 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
             {/* Page heading */}
@@ -220,9 +222,12 @@ const MyRentalsPage = async () => {
                         </div>
 
                         {/* Mobile & tablet cards */}
-                        <div className="divide-y divide-stone-100 xl:hidden">
+                        <div className="space-y-3 p-3 sm:space-y-4 sm:p-4 xl:hidden">
                             {bookingsWithEquipment.map((booking) => (
-                                <article key={booking._id} className="p-3.5 sm:p-5">
+                                <article
+                                    key={booking._id}
+                                    className="rounded-2xl border border-stone-200/90 bg-white p-3.5 shadow-sm transition-shadow hover:shadow-md sm:p-5"
+                                >
                                     <EquipmentInfo
                                         equipment={booking.equipment}
                                         badge={<StatusBadge status={booking.status} />}
@@ -249,7 +254,6 @@ const MyRentalsPage = async () => {
                                                 </dd>
                                             </div>
                                         ))}
-
                                     </dl>
                                 </article>
                             ))}

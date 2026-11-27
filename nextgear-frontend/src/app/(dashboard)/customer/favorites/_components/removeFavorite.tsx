@@ -51,7 +51,7 @@ export function RemoveFavoriteDialog({ favEquipId }: RemoveFavoriteDialogProps) 
                     </AlertDialogMedia>
                     <AlertDialogTitle>Delete Favorite Equipment?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This will permanently remove this Equipment from your Favorites and DataBase.
+                        This will permanently remove this Equipment from your Favorites.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
