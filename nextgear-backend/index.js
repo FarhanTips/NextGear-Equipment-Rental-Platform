@@ -129,6 +129,7 @@ app.get('/equipments', async (req, res) => {
 app.get('/equipments/:id', async (req, res) => {
   const id = req.params.id;
   const result = await equipments.findOne({ _id: new ObjectId(id) });
+  console.log(result)
   res.send(result);
 })
 
@@ -197,6 +198,7 @@ app.get('/my-favorites', async (req, res) => {
     }
   }
   const result = await favorites.find(query).toArray();
+  console.log(result)
   res.send(result);
 })
 
@@ -251,9 +253,16 @@ app.post("/verified-bookings", async (req, res) => {
 
 app.get("/rentals/:id", async (req, res) => {
   const id = req.params.id;
-  const result = await bookings.find({ "metadata.customerId": id }).toArray();
+
+  const result = await bookings.find({
+    $or: [
+      { "metadata.customerId": id },
+      { "metadata.ownerId": id }
+    ]
+  }).toArray();
+
   res.send(result);
-})
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
