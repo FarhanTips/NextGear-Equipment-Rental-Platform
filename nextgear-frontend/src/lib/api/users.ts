@@ -1,3 +1,5 @@
+
+
 import { authFetch } from "../core/server";
 
 
@@ -8,7 +10,7 @@ export const getUserById = async (id: string) => {
 }
 
 export const getAllUsers = async () => {
-  const api = `${process.env.NEXT_PUBLIC_API_URL}/all-users`;
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/users`;
   const res = await authFetch(api);
   return res;
 }

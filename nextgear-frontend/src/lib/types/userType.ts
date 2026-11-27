@@ -6,4 +6,5 @@ export interface UserType {
     email: string;
     image: string;
     userRole?: string;
+    createdAt?: string;
 }
