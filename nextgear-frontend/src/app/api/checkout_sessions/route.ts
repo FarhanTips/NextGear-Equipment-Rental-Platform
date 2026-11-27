@@ -40,6 +40,7 @@ export async function POST(request: Request) {
                 contactNumber: bookingData.contactNumber,
                 additionalNotes: bookingData.additionalNotes,
                 equipmentId: bookingData.equipmentId,
+                ownerId: bookingData.ownerId,
                 startDate: bookingData.startDate,
                 endDate: bookingData.endDate,
                 requiredQuantity: bookingData.requiredQuantity,

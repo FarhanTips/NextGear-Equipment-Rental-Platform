@@ -8,7 +8,6 @@ import { CalendarDays, CreditCard } from "lucide-react";
 import { EquipmentType } from "@/lib/types/equipmentType";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
-import { useSearchParams } from "next/navigation";
 
 const inputClass =
   "mt-1.5 w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-stone-400 focus:border-orange-400 focus:bg-white focus:ring-2 focus:ring-orange-100";
@@ -23,15 +22,6 @@ interface BookingSectionProps {
 
 export default function BookingSection({ equipment }: BookingSectionProps) {
   const { data: session } = authClient.useSession();
-
-  // Cancel booking code starts -----------------------
-  const searchParams = useSearchParams();
-  const canceled = searchParams.get("canceled");
-
-  if (canceled) {
-    console.log("Order canceled -- continue booking when you're ready.");
-  }
-  // Cancel booking code ends -----------------------
 
   const { rentalPrice, rentalType, availableQuantity } = equipment;
 
@@ -75,6 +65,7 @@ export default function BookingSection({ equipment }: BookingSectionProps) {
 
     const bookingData = {
       equipmentId: equipment._id,
+      ownerId: equipment.ownerId,
       address: formData.get("address"),
       additionalNotes: formData.get("additionalNotes"),
       startDate: formData.get("startDate"),
