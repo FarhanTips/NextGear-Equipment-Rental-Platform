@@ -47,7 +47,7 @@ export const authFetch = async (api: string) => {
     // if (res.status === 401 || res.status === 403) {
     //     redirect("/unauthorized");
     // }
-    console.log("res authFetcg", res)
+    console.log("res authFetch", res)
     if (res.status === 404) {
         notFound();
     }
