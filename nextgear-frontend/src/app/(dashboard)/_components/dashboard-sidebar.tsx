@@ -21,19 +21,19 @@ const menuItemsByRole = {
     customer: [
         { name: "My Rentals", url: "/customer/myRentals", icon: BriefcaseBusiness },
         { name: "Favorites", url: "/customer/favorites", icon: Bookmark },
-        { name: "Profile", url: "/dashboard/customer/profile", icon: User },
+        { name: "Profile", url: "/profile", icon: User },
     ],
     owner: [
         { name: "Add Equipment", url: "/owner/addEquipment", icon: PlusCircle },
         { name: "My Equipment", url: "/owner/myEquipment", icon: Package },
         { name: "My Equipment Rental", url: "/owner/myEquipmentRental", icon: ClipboardList },
-        { name: "My Profile", url: "/dashboard/owner/profile", icon: User },
+        { name: "My Profile", url: "/profile", icon: User },
     ],
     admin: [
         { name: "All Users", url: "/admin/allUsers", icon: Users },
         { name: "All Equipment", url: "/admin/allEquipments", icon: Package },
         { name: "All Rentals", url: "/admin/allRentals", icon: ClipboardList },
-        { name: "My Profile", url: "/dashboard/admin/profile", icon: User },
+        { name: "My Profile", url: "/profile", icon: User },
     ],
 }
 
