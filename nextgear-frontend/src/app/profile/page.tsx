@@ -121,6 +121,13 @@ export default function ProfilePage() {
                         <p className="text-[11px] text-stone-400 sm:text-xs">
                             Click the camera to change your photo
                         </p>
+
+                        <div className="mt-3">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold tracking-wide text-orange-700">
+                                <span className="size-1.5 rounded-full bg-orange-500" />
+                                {session?.user.userRole?.toUpperCase()}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -176,7 +183,7 @@ export default function ProfilePage() {
                                 name="profilePhoto"
                                 type="file"
                                 accept="image/*"
-                                className="sr-only"
+                                className="hidden"
                                 onChange={handlePhoto}
                             />
                         </div>
